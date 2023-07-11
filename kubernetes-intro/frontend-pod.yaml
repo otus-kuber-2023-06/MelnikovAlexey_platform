@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: frontend
+  name: frontend
+spec:
+  containers:
+    - image: avecake/frontend:0.0.1
+      name: frontend
+  dnsPolicy: ClusterFirst
+  restartPolicy: Never
