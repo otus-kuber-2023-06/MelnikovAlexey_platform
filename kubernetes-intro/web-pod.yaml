@@ -1,10 +1,10 @@
-apiVersion: v1 # Версия API
-kind: Pod # Объект, который создаем
+apiVersion: v1
+kind: Pod
 metadata:
-  name: web # Название Pod
-  labels: # Метки в формате key: value
+  name: web
+  labels:
     app: web
-spec: # Описание Pod
+spec:
   initContainers:
     - name: init-web
       image: busybox:latest
@@ -12,9 +12,9 @@ spec: # Описание Pod
       volumeMounts:
         - mountPath: /app
           name: app
-  containers: # Описание контейнеров внутри Pod
-  - name: web # Название контейнера
-    image: avecake/mynginx:1 # Образ из которого создается контейнер
+  containers:
+  - name: web
+    image: avecake/mynginx:1
     volumeMounts:
       - mountPath: /app
         name: app
