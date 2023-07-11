@@ -8,16 +8,16 @@ spec:
   initContainers:
     - name: init-web
       image: busybox:latest
-      command: ['sh', '-c', 'wget -O- https://tinyurl.com/otus-k8s-intro | sh']
+      command: [ 'sh', '-c', 'wget -O- https://tinyurl.com/otus-k8s-intro | sh' ]
       volumeMounts:
         - mountPath: /app
           name: app
   containers:
-  - name: web
-    image: avecake/mynginx:1
-    volumeMounts:
-      - mountPath: /app
-        name: app
+    - name: web
+      image: avecake/mynginx:1
+      volumeMounts:
+        - mountPath: /app
+          name: app
   volumes:
     - name: app
-      emptyDir: {}
+      emptyDir: { }
