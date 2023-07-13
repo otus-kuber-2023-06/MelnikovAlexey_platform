@@ -92,4 +92,53 @@ frontend   1/1     Running   0          58m
 ```
 
 ## PR checklist:
-- [x] Выставлен **kubernetes-intro** с темой домашнего задания
+- [x] Выставлен label **kubernetes-intro** с темой домашнего задания
+
+
+## Домашнее задание №2
+
+## В процессе сделано:
+  - Пункт 1
+1. Был создан первый манифест ReplicaSet [frontend-replicaset.yaml](kubernetes-controllers%2Ffrontend-replicaset.yaml) из методички HW2
+  
+   1. Исправлены ошибки в манифесте. Отсутствовала секция важная секция selector. 
+   2. В манифест так же добавлены переменные (env) которые необходимы подам для работоспособности.
+   3. Через команду  `kubectl apply -f frontend-replicaset.yaml` запустили репликасет. Убедились что поднялась одна реплика пода **frontend** командой `kubectl get rs frontend`
+      ```
+      PS...\MelnikovAlexey_platform>  kubectl get rs frontend
+      NAME       DESIRED   CURRENT   READY   AGE
+      frontend   1         1         1       46s
+      ```
+   4. Изменили количество реплик с 1 на 3 через команду `kubectl scale replicaset frontend --replicas=3`. Убедились что количество реплик пода **frontend** изменилось на 3 командой `kubectl get rs frontend` 
+      ```
+      PS...\MelnikovAlexey_platform>  kubectl get rs frontend
+      NAME       DESIRED   CURRENT   READY   AGE
+      frontend   3         3         3       46s
+      ```
+   5. Через команды  `kubectl delete pods -l app=frontend | kubectl get pods -l app=frontend -w` убедились что репликасет отслеживает изменения состояний подов и поднимает новые реплики в случае если под по какой-то причине зафейлился. В нашем случае они были специально удалены.
+      ```
+      PS...\MelnikovAlexey_platform> kubectl delete pods -l app=frontend | kubectl get pods -l app=frontend -w
+      NAME             READY   STATUS              RESTARTS   AGE
+      frontend-8x8m2   0/1     ContainerCreating   0          2s
+      frontend-bjsb5   0/1     ContainerCreating   0          2s
+      frontend-xv6bd   0/1     ContainerCreating   0          2s
+      frontend-xv6bd   1/1     Running             0          3s
+      frontend-8x8m2   1/1     Running             0          3s
+      frontend-bjsb5   1/1     Running             0          4s
+      ```
+   6. Изменен манифест чтобы сразу поднималось 3 реплики пода.
+   7. Изменена версия образа с которого репликасет поднимает под. После применения манифеста командой `kubectl get replicaset frontend -o=jsonpath='{.spec.template.spec.containers[0].image}'` убеждаемся что образ с которого будут создаваться реплики подов изменился на указанную нами в манифесте версию
+      ```
+      PS...\MelnikovAlexey_platform\kubernetes-controllers> kubectl get replicaset frontend -o=jsonpath='{.spec.template.spec.containers[0].image}'
+      avecake/frontend:0.0.2
+      ```
+      Проверяем образ с которого запущен под командой `kubectl get pods -l app=frontend -o=jsonpath='{.items[0:3].spec.containers[0].image}'`
+      ```
+      PS...\MelnikovAlexey_platform\kubernetes-controllers> kubectl get pods -l app=frontend -o=jsonpath='{.items[0:3].spec.containers[0].image}'
+      avecake/frontend:0.0.1 avecake/frontend:0.0.1 avecake/frontend:0.0.1
+      ```
+      образ подов не был изменен. Образ пода будет изменен когда репликасет его пересоздаст. В нашем случае мы удаляем под вручную командой `kubectl delete pods -l app=frontend`. После этого снова проверяем с какого образа был развернут под.
+      ```
+      PS...\MelnikovAlexey_platform\kubernetes-controllers> kubectl get pods -l app=frontend -o=jsonpath='{.items[0:3].spec.containers[0].image}'
+      avecake/frontend:0.0.2 avecake/frontend:0.0.2 avecake/frontend:0.0.2
+      ```
