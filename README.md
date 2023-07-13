@@ -142,3 +142,36 @@ frontend   1/1     Running   0          58m
       PS...\MelnikovAlexey_platform\kubernetes-controllers> kubectl get pods -l app=frontend -o=jsonpath='{.items[0:3].spec.containers[0].image}'
       avecake/frontend:0.0.2 avecake/frontend:0.0.2 avecake/frontend:0.0.2
       ```
+   8. Добавлены deployment манифесты для paymentservice.
+   9. Добавлен Probes для frontend
+
+
+- Пункт 2
+1. Добавлены deployment манифесты для paymentservice с двумя стратегиями
+   1. Аналог blue-green:
+      ```
+      spec:
+         strategy:
+           type: RollingUpdate
+           rollingUpdate:
+             maxSurge: 0
+             maxUnavailable: 1
+      ```
+   2. Reverse Rolling Update:
+      ```
+      spec:
+         strategy:
+           type: RollingUpdate
+           rollingUpdate:
+             maxSurge: 3
+             maxUnavailable: 0
+      ```
+2 Добавлен node-exporter-daemonset.yaml.
+  1. Если я правильно понял из документации и нескольких проблем на stackoverflow. За разворачивание на мастер ноде отвечает данная секция и правило
+     ```
+      spec:
+        tolerations:
+          - key: node-role.kubernetes.io/master
+            operator: Exists
+            effect: NoSchedule
+     ```
