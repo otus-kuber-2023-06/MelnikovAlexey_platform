@@ -99,7 +99,7 @@ frontend   1/1     Running   0          58m
 
 ## В процессе сделано:
   - Пункт 1
-1. Был создан первый манифест ReplicaSet [frontend-replicaset.yaml](kubernetes-controllers%2Ffrontend-replicaset.yaml) из методички HW2
+1. Был создан первый манифест ReplicaSet **frontend-replicaset.yaml** из методички HW2
   
    1. Исправлены ошибки в манифесте. Отсутствовала секция важная секция selector. 
    2. В манифест так же добавлены переменные (env) которые необходимы подам для работоспособности.
