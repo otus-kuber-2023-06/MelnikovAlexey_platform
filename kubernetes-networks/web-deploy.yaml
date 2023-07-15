@@ -8,31 +8,37 @@ spec:
   selector:
     matchLabels:
       app: web
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 100%
   template:
     metadata:
+      name: web
       labels:
         app: web
     spec:
+      initContainers:
+        - name: init-web
+          image: busybox:latest
+          command: [ 'sh', '-c', 'wget -O- https://tinyurl.com/otus-k8s-intro | sh' ]
+          volumeMounts:
+            - mountPath: /app
+              name: app
       containers:
         - name: web
-          image: avtandilko/web:1.0
+          image: avecake/mynginx:1
+          readinessProbe:
+            httpGet:
+              port: 8000
+              path: /index.html
           livenessProbe:
             tcpSocket:
               port: 8000
-          readinessProbe:
-            httpGet:
-              path: /index.html
-              port: 8000
           volumeMounts:
-            - name: app
-              mountPath: /app
-      initContainers:
-        - name: html-gen
-          image: busybox:musl
-          command: ['sh', '-c', 'wget -O- https://bit.ly/otus-k8s-index-gen | sh']
-          volumeMounts:
-            - name: app
-              mountPath: /app
+            - mountPath: /app
+              name: app
       volumes:
         - name: app
-          emptyDir: {}
+          emptyDir: { }
