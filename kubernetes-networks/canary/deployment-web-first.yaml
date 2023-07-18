@@ -26,7 +26,7 @@ spec:
             - mountPath: /app
               name: app
       containers:
-        - name: web-prod-first
+        - name: web
           image: avecake/mynginx:1
           readinessProbe:
             httpGet:
