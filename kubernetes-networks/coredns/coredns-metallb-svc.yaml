@@ -13,7 +13,7 @@ spec:
   selector:
     k8s-app: kube-dns
   type: LoadBalancer
-  loadBalancerIP: 172.17.255.10
+  loadBalancerIP: 172.17.255.10 # loadBalancerIP is deprecated but still works
 ---
 apiVersion: v1
 kind: Service
@@ -30,4 +30,4 @@ spec:
   selector:
     k8s-app: kube-dns
   type: LoadBalancer
-  loadBalancerIP: 172.17.255.10
+  loadBalancerIP: 172.17.255.10 # loadBalancerIP is deprecated but still works
