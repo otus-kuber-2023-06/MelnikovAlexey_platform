@@ -1,0 +1,18 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: web-prod-first-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+    - host: ave.canary.host
+      http:
+        paths:
+          - path: /web-canary
+            pathType: Prefix
+            backend:
+              service:
+                name: web-prod-first-svc
+                port:
+                  number: 8000
