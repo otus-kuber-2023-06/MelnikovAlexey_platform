@@ -353,7 +353,7 @@ frontend   1/1     Running   0          58m
 1. сделать доступ к kubernetes-dashboard через ingress-прокси сервис должен быть доступен через префикс /dashboard ).
    - устанавливаем дашборд: `kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v3.0.0-alpha0/charts/kubernetes-dashboard.yaml`
    - пишем манифест и деплоим ингресс `ingress-dashboard.yaml` в поддиректории `./dashboard`
-- проверяем работоспособность 
+- проверяем работоспособность `curl http://192.168.49.2/dashboard`
 ![ingress-kuber-dashboard.jpg](kubernetes-networks%2Fdashboard%2Fimages%2Fingress-kuber-dashboard.jpg)
 ###### Задание со звездочкой * | Canary для Ingress
 1. Реализуйте канареечное развертывание с помощью ingress-nginx
@@ -363,9 +363,9 @@ frontend   1/1     Running   0          58m
     - `nginx.ingress.kubernetes.io/canary-weight: "20"` - тут указываем какой процент случайных запросов, будет перенаправлен в службу, указанную в канареечном входе.
     - не забываем, что без доменного имени это работать не будет. в хостах виртуальной машины прописываем имя по которому будем обращаться. `<ip-minikube> ave.canary.host`
 - все сохраняем в поддиректории `.canary/`
-- проверяем работоспособность
+- проверяем работоспособность 
   - смотрим что поднялись ингрессы![describe.bmp](kubernetes-networks%2Fcanary%2Fimages%2Fdescribe.bmp)
-  - несколько раз прогоняем тесты curl-ом ![canary.bmp](kubernetes-networks%2Fcanary%2Fimages%2Fcanary.bmp)
+  - несколько раз прогоняем тесты curl-ом `seq 15 | xargs -Iz curl -s http://ave.canary.host/web-canary | grep HOSTNAME` ![canary.bmp](kubernetes-networks%2Fcanary%2Fimages%2Fcanary.bmp)
   
 
 
