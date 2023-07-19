@@ -277,7 +277,7 @@ frontend   1/1     Running   0          58m
   - плюем на описание в методичке и идем на сайт [Metallb](https://metallb.universe.tf/installation/)
   - тут же мы видим причины почему необходимо выставить kube-proxy для ключа `ipvs.strictARP:` значение **_true_**
   - устанавливаем metallb `kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.13.10/config/manifests/metallb-native.yaml`
-    - тут у меня начинаются очередные проблемы с развертываием.
+    - тут у меня начинаются очередные проблемы с развертыванием.
     - под контроллера в namespaces `metallb-system` в состоянии `ImagePullBackOff`. чешем репу ничего не понятно.
     - удаляем все из namespaces `metallb-system` ставим заново проделываем данные пункты n-1 раз.
     - идем в vm `minikube ssh` проверяем сайт откуда тянутся образы контроллера и спикера `curl quay.io` получаем ответ `Could not resolve host: quay.io`
