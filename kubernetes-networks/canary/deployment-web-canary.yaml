@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-canary-second
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: web-canary-second
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 100%
+  template:
+    metadata:
+      name: web-canary-second
+      labels:
+        app: web-canary-second
+    spec:
+      initContainers:
+        - name: init-web
+          image: busybox:latest
+          command: [ 'sh', '-c', 'wget -O- https://tinyurl.com/otus-k8s-intro | sh' ]
+          volumeMounts:
+            - mountPath: /app
+              name: app
+      containers:
+        - name: web
+          image: avecake/mynginx:1
+          readinessProbe:
+            httpGet:
+              port: 8000
+              path: /index.html
+          livenessProbe:
+            tcpSocket:
+              port: 8000
+          volumeMounts:
+            - mountPath: /app
+              name: app
+      volumes:
+        - name: app
+          emptyDir: { }

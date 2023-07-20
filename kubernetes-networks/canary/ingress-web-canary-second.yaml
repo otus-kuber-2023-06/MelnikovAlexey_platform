@@ -1,0 +1,20 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: web-canary-second-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/canary: "true"
+    nginx.ingress.kubernetes.io/canary-weight: "20"
+spec:
+  rules:
+    - host: ave.canary.host
+      http:
+        paths:
+          - path: /web-canary
+            pathType: Prefix
+            backend:
+              service:
+                name: web-canary-second-svc
+                port:
+                  number: 8000
