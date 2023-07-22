@@ -366,3 +366,48 @@ frontend   1/1     Running   0          58m
 - проверяем работоспособность 
   - смотрим что поднялись ингрессы![describe.jpg](kubernetes-networks%2Fcanary%2Fimages%2Fdescribe.jpg)
   - несколько раз прогоняем тесты curl-ом `seq 15 | xargs -Iz curl -s http://ave.canary.host/web-canary | grep HOSTNAME` ![canary.jpg](kubernetes-networks%2Fcanary%2Fimages%2Fcanary.jpg)
+
+
+## Домашнее задание №4
+### Тема: Volumes, Storages, StatefulSet
+### В процессе сделано.
+###### Применение StatefulSet
+ - Добавлен манифест **minio-statefulset.yaml**.
+    ```
+   kubectl apply -f https://raw.githubusercontent.com/express42/otus-platform-snippets/master/Module-02/Kuberenetes-volumes/minio-statefulset.yaml
+   ```
+ - запущен Pod с MinIO
+###### Применение Headless Service
+ - Добавлен манифест **minio-headless-service.yaml**.
+    ```
+   kubectl apply -f https://raw.githubusercontent.com/express42/otus-platform-snippets/master/Module-02/Kuberenetes-volumes/minio-headless-service.yaml
+   ```
+###### Задание со *
+1. Поместите данные из конфигурации нашего StatefulSet в secrets и настройте конфигурацию на их использование.
+   - Secrets взят c самым простым типом `type: Opaque` 
+   - Написан манифест **minio-creds-secret.yaml**
+   - в манифесте **minio-statefulset.yaml** вместо открытых данных используем данные из нашего секрета.
+   ```
+   ...
+       - name: MINIO_ACCESS_KEY
+         valueFrom:
+           secretKeyRef:
+             key: {key_name}
+             name: minio-creds
+   ...
+    ```
+###### Задание опциональные
+- создан PersistentVolume. Манифест my-pv.yaml
+- создан PersistentVolumeClaim. Манифест my-pvc.yaml
+- создан Pod my-pod с PVC my-pvc. Манифест my-pod.yaml. Подключились к данному поду. Записали строку в файл. Удалили под.
+  ```
+    kubectl apply -f my-pod.yaml
+    kubectl exec -it my-pod -- /bin/bash
+    echo "Hello, Kubernetes Volumes!" > /app/data/data.txt
+    kubectl delete pod my-pod
+  ```
+- создан Pod my-pod-2 с тем же PVC my-pvc. Манифест my-pod-2.yaml. Подключились к данному поду. Проверили файл.
+  ```
+    kubectl exec -it my-pod-2 -- /bin/bash
+    cat /app/data/data.txt
+  ```
