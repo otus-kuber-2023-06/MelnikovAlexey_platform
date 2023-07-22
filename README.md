@@ -411,3 +411,22 @@ frontend   1/1     Running   0          58m
     kubectl exec -it my-pod-2 -- /bin/bash
     cat /app/data/data.txt
   ```
+
+## Домашнее задание №5
+### Тема: Безопасность и управление доступом
+### В процессе сделано.
+###### Task1
+- Создан Service Account `bob`, дана ему роль `admin` в рамках всего кластера. Манифесты [01-bob-admin-sa.yaml](kubernetes-security%2Ftask01%2F01-bob-admin-sa.yaml) и [02-bob-admin-crb.yaml](kubernetes-security%2Ftask01%2F02-bob-admin-crb.yaml)
+- Создан Service Account `dave` без доступа к кластеру. Манифест [03-dave-sa.yaml](kubernetes-security%2Ftask01%2F03-dave-sa.yaml)
+
+###### Task2
+- Создан Namespace `prometheus`. Манифест [01-prometheus-ns.yaml](kubernetes-security%2Ftask02%2F01-prometheus-ns.yaml)
+- Создан Service Account `carol` в этом Namespace. Манифест [02-carol-sa-prometheus-ns.yaml](kubernetes-security%2Ftask02%2F02-carol-sa-prometheus-ns.yaml)
+- Дан всем Service Account в Namespace `prometheus` возможность делать `get , list , watch` в отношении Pods всего кластера. Манифесты [03-pods-cr.yaml](kubernetes-security%2Ftask02%2F03-pods-cr.yaml) и [04-group-crb-prometheus-ns.yaml](kubernetes-security%2Ftask02%2F04-group-crb-prometheus-ns.yaml)
+
+###### Task3
+- Создан Namespace `dev`. Манифест [01-dev-ns.yaml](kubernetes-security%2Ftask03%2F01-dev-ns.yaml)
+- Создан Service Account `jane` в Namespace `dev`. Манифест [02-jane-sa-dev-ns.yaml](kubernetes-security%2Ftask03%2F02-jane-sa-dev-ns.yaml)
+- Дан `jane` роль `admin` в рамках Namespace `dev`. Манифест [03-jane-admin-cr-dev-ns.yaml](kubernetes-security%2Ftask03%2F03-jane-admin-cr-dev-ns.yaml)
+- Создан Service Account `ken` в Namespace `dev`. Манифест [04-ken-sa-dev-ns.yaml](kubernetes-security%2Ftask03%2F04-ken-sa-dev-ns.yaml)
+- Дан `ken` роль `view` в рамках Namespace `dev`. Манифест [05-ken-view-cr-dev-ns.yaml](kubernetes-security%2Ftask03%2F05-ken-view-cr-dev-ns.yaml)
