@@ -7,7 +7,7 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
-    - host: shop.51.250.76.11.nip.io
+    - host: shop.{{ .Values.ingress.domain | default "localhost" }}
       http:
         paths:
           - path: /
