@@ -3,7 +3,7 @@ kind: MySQL
 metadata:
   name: mysql-instance
 spec:
-  image: mysql:8.1.0
+  image: mysql:5.7
   database: otus-database
   password: otuspassword
   storage_size: 1Gi
