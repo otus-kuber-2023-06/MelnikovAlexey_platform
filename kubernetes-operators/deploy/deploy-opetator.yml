@@ -15,5 +15,5 @@ spec:
       serviceAccountName: mysql-operator
       containers:
         - name: operator
-          image: "avecake/mysql-kuber-custom-operators:1.0.0"
+          image: "avecake/mysql-kuber-custom-operators:1.0.1"
           imagePullPolicy: "Always"
