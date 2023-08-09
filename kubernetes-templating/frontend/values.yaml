@@ -1,0 +1,10 @@
+image:
+  tag: v0.1.3
+replicas: 1
+service:
+  type: nodePort
+  port: 80
+  targetPort: 8080
+  nodePort: 30312
+ingress:
+  domain: 51.250.76.11.nip.io
